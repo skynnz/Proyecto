@@ -20,11 +20,11 @@ mysql = MySQL(app)
 @app.route('/login', methods =['GET', 'POST'])
 def login():
     msg = ''
-    if request.method == 'POST' and 'username' in request.form and 'pass' in request.form:
-        username = request.form['username']
-        password = request.form['pass']
+    if request.method == 'POST' and 'usuario' in request.form and 'contra' in request.form:
+        usuario = request.form['usuario']
+        contra = request.form['contra']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE username = % s AND pass = % s', (username, password, ))
+        cursor.execute('SELECT * FROM accounts WHERE username = % s AND pass = % s', (usuario, contra, ))
         account = cursor.fetchone()
         if account:
             session['loggedin'] = True
@@ -33,7 +33,7 @@ def login():
             msg = 'Logged in successfully !'
             return render_template('auth/index.html', msg = msg)
         else:
-            msg = 'Incorrect username / pass !'
+            msg = 'Incorrect usuario / contra !'
     return render_template('auth/login.html', msg = msg)
  
 @app.route('/logout')
