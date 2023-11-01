@@ -1,5 +1,4 @@
-venv\
-__pycache__\
-assets\
-echo ".env" >> .gitignore
-static\
+venv/*
+__pycache__/*
+assets/*
+static/*
