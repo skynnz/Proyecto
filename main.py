@@ -1,49 +1,52 @@
 from flask import Flask, render_template, request, session, url_for, redirect, flash
 from werkzeug.security import check_password_hash
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
-import re
+import psycopg2
+
 
 app = Flask(__name__)
+app.secret_key = 'holaholahola'  # Clave secreta para la sesión
 
 
-app.secret_key = 'your secret key'
- 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'sistema'
-app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'proyecto'
- 
-mysql = MySQL(app)
- 
+# Configura la conexión a la base de datos PostgreSQL
+conn = psycopg2.connect(
+    database="proyecto",
+    user="sistema",
+    password="admin",
+    host="localhost",
+    port="5432"
+)
+
+
 @app.route('/')
-@app.route('/login', methods =['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    msg = ''
-    if request.method == 'POST' and 'username' in request.form and 'pass' in request.form:
-        username = request.form['username']
-        password = request.form['pass']
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE username = % s AND pass = % s', (username, password, ))
-        account = cursor.fetchone()
-        if account:
+    if request.method == 'POST' and 'usuario' in request.form and 'contra' in request.form:
+        usuario = request.form['usuario']
+        contra = request.form['contra']
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE usuario = %s AND contra = %s", (usuario, contra))
+        users = cur.fetchone()
+        if users:
             session['loggedin'] = True
-            session['id'] = account['id']
-            session['username'] = account['username']
-            msg = 'Logged in successfully !'
-            return render_template('auth/index.html', msg = msg)
+            session['id'] = users['id_user']
+            session['usuario'] = users['usuario']  # Almacena el ID del usuario en la sesión
+            return render_template('auth/index.html')
         else:
-            msg = 'Incorrect username / pass !'
-    return render_template('auth/login.html', msg = msg)
- 
+            return "Credenciales incorrectas. Inténtalo de nuevo."
+
+    return render_template('auth/login.html')  # Debes crear una plantilla HTML para el formulario de inicio de sesión
+
+
 @app.route('/logout')
 def logout():
-    session.pop('loggedin', None)
-    session.pop('id', None)
-    session.pop('username', None)
-    flash('Goodbye!')
+    session.pop('loggedin', None) 
+    session.pop('id_user', None) 
+    session.pop('usuario', None)  # Elimina la información de sesión del usuario
     return redirect(url_for('login'))
 
+@app.route("/")
+def lo():
+    return render_template('auth/login')
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=81)
+  app.run(debug=True, port=81)
