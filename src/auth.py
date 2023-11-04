@@ -1,8 +1,6 @@
 from common import *
 
 
-app = Flask(__name__)
-
 
 def login():
     msg = ''
@@ -24,4 +22,4 @@ def login():
 def logout():
     session.pop('iduser', None) 
     session.pop('usuario', None)  # Elimina la información de sesión del usuario
-    return redirect(url_for('login'))
+    return redirect(url_for('login_route'))
