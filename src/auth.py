@@ -1,29 +1,27 @@
-from flask import Flask, render_template, request, session, url_for, redirect, flash
-from werkzeug.security import check_password_hash
+from common import *
+
 
 app = Flask(__name__)
 
-@app.route('/login', methods=('GET', 'POST'))
+
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        db = get_db()
-        error = None
-        user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
-        ).fetchone()
+    msg = ''
+    if request.method == 'POST' and 'usuario' in request.form and 'contra' in request.form:
+        usuario = request.form['usuario']
+        contra = request.form['contra']
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM users WHERE usuario = %s AND contra = %s", (usuario, contra))
+        users = cur.fetchone()
+        if users:
+            session['iduser'] = users[0]
+            session['usuario'] = users[0]  # Almacena el ID del usuario en la sesión
+            return render_template('auth/index.html')
+        else:
+            msg = "Credenciales incorrectas. Inténtalo de nuevo."
 
-        if user is None:
-            error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+    return render_template('auth/login.html', msg = msg)  # Debes crear una plantilla HTML para el formulario de inicio de sesión
 
-        if error is None:
-            session.clear()
-            session['user_id'] = user['id']
-            return redirect(url_for('index'))
-
-        flash(error)
-
-    return render_template('auth/login.html')
+def logout():
+    session.pop('iduser', None) 
+    session.pop('usuario', None)  # Elimina la información de sesión del usuario
+    return redirect(url_for('login'))
