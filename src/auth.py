@@ -1,13 +1,14 @@
 from common import *
 
 
-
 def login():
     msg = ''
     if request.method == 'POST' and 'usuario' in request.form and 'contra' in request.form:
         usuario = request.form['usuario']
         contra = request.form['contra']
-        cur = conn.cursor()
+        conexion = Conexion()
+        con = conexion.getConexion()
+        cur = con.cursor()
         cur.execute("SELECT * FROM users WHERE usuario = %s AND contra = %s", (usuario, contra))
         users = cur.fetchone()
         if users:

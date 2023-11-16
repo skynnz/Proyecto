@@ -1,6 +1,6 @@
 from common import *
 from src.auth import login, logout
-from src.ciudades import ciudades
+from src.ciudades import Ciudad
 
 app = Flask(__name__)
 app.secret_key = 'holaholahola'  # Clave secreta para la sesión
@@ -17,7 +17,9 @@ def logout_route():
 
 @app.route('/ciudades')
 def ciudades_route():
-   return ciudades()
+   ci = Ciudad()
+
+   return render_template('html/ciudades.html', ciudades=ci.ciudades())
 
 
 if __name__ == '__main__':
