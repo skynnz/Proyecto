@@ -21,8 +21,7 @@ class Ciudad:
 
 
     def ciudades(self):
-        c = Ciudad()
-        lista = c.get_ciudades()
+        lista = self.get_ciudades()
         diccionario = []
         if len(lista) > 0:
             for item in lista:
