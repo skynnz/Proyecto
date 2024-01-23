@@ -1,2 +1,2 @@
 from flask import Flask, request, session, render_template, redirect, url_for
-from src.db import Conexion
+from app.db import Conexion

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% include "layouts/css_load.html" %}
+  <title>Ciudades</title>
+</head>
+
+<body>
+  <div class="wrapper">
+    {% include "layouts/navbar.html" %}
+    {% include "layouts/sidebar.html" %}
+
+    <div class="content-wrapper">
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              {% if ciudades|length > 0 %}
+              <div class="card">
+                <div class="card-body">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th class="sorting sorting_asc">ID</th>
+                            <th class="sorting">City names</th>
+                            <th class="sorting">ABR</th>
+                        </thead>
+                        <tbody>
+                          {% for ciudad in ciudades %}
+                          <tr class="odd">
+                            <td>{{ ciudad['idciudad'] }}</td>
+                            <td>{{ ciudad['nom_city'] }}</td>
+                            <td>{{ ciudad['abr_city'] }}</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  {% else %}
+                  <div class="alert alert-info">
+                    no hay datos
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+      </section>
+      <a href="{{ url_for('logout_route') }}">Logout</a>
+    </div>
+    {% include "layouts/footer.html" %}
+  </div>
+  {% include "layouts/js_load.html" %}
+</body>
+
+</html>
