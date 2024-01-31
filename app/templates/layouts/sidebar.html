@@ -1,7 +1,7 @@
-<-% include ('src.db') %>
+<-% include ('app.db') %>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ url_for('login_route') }}" class="brand-link">
+    <a href="{{ url_for('ciudad.index_ciudad') }}" class="brand-link">
       <img src="../../static/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">SysProd</span>
     </a>
@@ -19,7 +19,7 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <a href="{{ url_for('ciudades_route') }}">ciudades</a>
+        <a href="{{ url_for('ciudad.index_ciudad') }}">ciudades</a>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

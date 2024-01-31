@@ -35,6 +35,10 @@
                             <td>{{ ciudad['idciudad'] }}</td>
                             <td>{{ ciudad['nom_city'] }}</td>
                             <td>{{ ciudad['abr_city'] }}</td>
+                            <td>
+                              <a href="{{ url_for('ciudad.editar_ciudad', id=ciudad['idciudad']) }}" class="btn btn-primary">Editar</a>
+                              <a href="{{ url_for('ciudad.delete_ciudad', id=ciudad['idciudad']) }}" class="btn btn-primary">Eliminar</a>
+                            </td>
                           </tr>
                           {% endfor %}
                         </tbody>
@@ -43,7 +47,7 @@
                   </div>
                   {% else %}
                   <div class="alert alert-info">
-                    no hay datos
+                    No hay datos que mostrar...
                   </div>
                 </div>
                 {% endif %}
@@ -51,7 +55,7 @@
             </div>
           </div>
       </section>
-      <a href="{{ url_for('logout_route') }}">Logout</a>
+      
     </div>
     {% include "layouts/footer.html" %}
   </div>

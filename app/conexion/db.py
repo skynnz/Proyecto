@@ -7,7 +7,7 @@ class Conexion:
         
         Se retorna una instancia de la base de datos
         """
-        self.__con = psycopg2.connect("dbname=sistema_PROD user=sistema host=localhost password=admin@")
+        self.__con = psycopg2.connect("dbname=sistema_DESA user=sistema host=localhost password=admin@")
         
     def getConexion(self):
         return self.__con    
